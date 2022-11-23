@@ -3,7 +3,6 @@ from database_utils import DatabaseUtils
 import logging
 from prettytable import PrettyTable
 import re 
-from bookevent import bookevent
 from voice_recognition import voice_recognition
 import datetime
 from barcodescanner import barcodescanner
@@ -136,9 +135,22 @@ class library_menu:
         Parameters: username
         """
 
-        print('Please Note that you only can borrow a book by its ISBN. If you do not know the ISBN, please go back to the menu and search the book first')
+        print('Please Note that you only can borrow a book by its ISBN. If you do not know the ISBN, use barcode scanner or please go back to the menu and search the book first')
         # prompt the user for book's ISBN
-        book_isbn = input('Please type the ISBN here or hit q to go back to menu: \n')
+        # prompt the user to choose between entering the ISBN manually or scanning the QR code
+        option=int(input('Please choose\n 1.Manually Enter the detail\n 2.Borrow the book using QR code \n'))
+        if option==1 :
+            # prompt the user for the book ISBN
+            book_isbn = input('Please type the ISBN here or hit q to go back to menu: \n')
+        # if user choses to scan a QR code
+        elif option==2:
+            # call the barcodescanner file
+            book_isbn = barcodescanner.scanQR()
+            # strip the ISBN if it has spaces
+            book_isbn = book_isbn.strip()
+            # if the ISBN code does not match the format then exit
+            if book_isbn == "quitbyuser":
+                exit
         # exit if user hits q
         if book_isbn == 'q': exit
         # call DatabaseUtils class and create an object of it
@@ -176,9 +188,6 @@ class library_menu:
                         book_details = list(book_details)
                         # add leading zeros to the book id to be able to add an event
                         # since the id in google calendar must be at least 5 digits
-                        id_event = '00000' + str(book_details[0][0])
-                        # add an event to the calendar with the book details
-                        bookevent.insert(user, id_event, book_details[0][2], book_details[0][3])
                         # check if the user exists in LmsUser table
                         check_user_in_LmsUser = db_object.getUser(user)
                         if check_user_in_LmsUser == False:
@@ -233,9 +242,6 @@ class library_menu:
             # check if the book has been borrowed at the first place
             return_value, t_value = db_object.checkIfBookExistsInBookBorrowed(user_input, user)
             if isinstance(return_value, int) and t_value == True:
-                id_event = '00000' + str(return_value)
-                # remove the event from Google Calendar
-                bookevent.removeEvent(id_event)
                 #  update the status of the book in BookBorrowed table
                 db_object.updateBookBorrowed(user, return_value, 'returned', today_date)
                 # print a message to the user
