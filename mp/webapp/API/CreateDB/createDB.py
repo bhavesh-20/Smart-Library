@@ -4,10 +4,10 @@ import MySQLdb
 class CreateDB:
 
     def __init__(self):
-        HOST = "35.201.19.68"
-        USER = "root"
-        PASSWORD = "klLBK8BxKmNOfhkE"
-        DATABASE = "Library_test"
+        HOST = "sql6.freemysqlhosting.net"
+        USER = "sql6580154"
+        PASSWORD = "DfAgZAZTts"
+        DATABASE = "sql6580154"
         self.connection = MySQLdb.connect(HOST, USER, PASSWORD, DATABASE)
         
     def createTables(self):
