@@ -3,7 +3,6 @@ from database_utils import DatabaseUtils
 import logging
 from prettytable import PrettyTable
 import re 
-from voice_recognition import voice_recognition
 import datetime
 from barcodescanner import barcodescanner
 
@@ -108,8 +107,7 @@ class library_menu:
         while True:
             print()
             print("1. Search through command line")
-            print("2. Search through voice")
-            print("3. back")
+            print("2. back")
             selection = input("Select an option: ")
             print()
 
@@ -117,8 +115,6 @@ class library_menu:
                 if(selection == "1"):
                     return input("Enter book's "+subject+": ")
                 elif(selection == "2"):
-                    return voice_recognition.getTextFromVoice()
-                elif(selection == "3"):
                     break
                 else:
                     print("Invalid input - please try again.")
@@ -322,8 +318,3 @@ class library_menu:
             else:
                 print("Book not found! please try again.")
                 return False
-
-
-  
-
-
