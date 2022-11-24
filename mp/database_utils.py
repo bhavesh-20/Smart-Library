@@ -327,8 +327,9 @@ class DatabaseUtils:
         """
         try:
             with self.connection.cursor() as cursor:
-                cursor.execute("select BookID from BookBorrowed Where BookID = %(BookID)s AND Status = %(Status)s", {'BookID':bookID,"Status":'borrowed'})
-                if cursor.rowcount > 0:
+                cursor.execute("select BookID from BookBorrowed Where BookID = %(BookID)s AND Status != %(Status)s", {'BookID':bookID,"Status":'borrowed'})
+                unborrowed = cursor.fetchall()
+                if len(unborrowed) > 0:
                     return True
                 else:
                     return False
