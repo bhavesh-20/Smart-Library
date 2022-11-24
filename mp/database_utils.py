@@ -51,7 +51,8 @@ class DatabaseUtils:
                 cursor.execute(open("cloud_db_schema.sql", "r").read())
             self.connection.commit()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # User CRUD table
     # ****************************************
@@ -71,7 +72,8 @@ class DatabaseUtils:
 
             return cursor.rowcount == 1
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Get user
     def getUser(self, name):
@@ -90,7 +92,8 @@ class DatabaseUtils:
                 else:
                     return False
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Get user
     def getUsers(self):
@@ -106,7 +109,8 @@ class DatabaseUtils:
                 cursor.execute("select * from LmsUser")
                 return cursor.fetchall()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Delete User
     def deleteUser(self, name):
@@ -122,7 +126,8 @@ class DatabaseUtils:
                 cursor.execute("delete from LmsUser where UserName = %s", (name,))
             self.connection.commit()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
 
     # Book CRUD table
@@ -143,7 +148,8 @@ class DatabaseUtils:
 
             return cursor.rowcount == 1
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Get Book by title
     def getBookByTitle(self, title):
@@ -159,7 +165,8 @@ class DatabaseUtils:
                 cursor.execute("select * from Book Where Title Like %s", ("%" + title + "%",))
                 return cursor.fetchall()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Get Book by Author
     def getBookByAuthor(self, author):
@@ -175,7 +182,8 @@ class DatabaseUtils:
                 cursor.execute("select * from Book Where Author Like %s", ("%" + author + "%",))
                 return cursor.fetchall()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Get Book by ISBN
     def getBookByISBN(self, isbn):
@@ -191,7 +199,8 @@ class DatabaseUtils:
                 cursor.execute("select * from Book Where ISBN Like %s", ("%" + isbn + "%",))
                 return cursor.fetchall()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Get Book by book ID
     def getBookByID(self, bookID):
@@ -207,7 +216,8 @@ class DatabaseUtils:
                 cursor.execute("select * from Book Where BookID Like %(BookID)s", {"BookID":bookID})
                 return cursor.fetchall()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
         # Get Book by ISBN
     def getBooks(self):
@@ -224,7 +234,8 @@ class DatabaseUtils:
                 cursor.execute("select * from Book")
                 return cursor.fetchall()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Delete Book
     def deleteBook(self, bookID):
@@ -240,7 +251,8 @@ class DatabaseUtils:
                 cursor.execute("delete from Book where BookID = %s", (bookID,))
             self.connection.commit()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
 
     # BookBorrowed CRUD table
@@ -261,7 +273,8 @@ class DatabaseUtils:
                 # cursor.execute("insert into BookBorrowed Where BookID = %(BookID)s AND Status = %(Status)s", {'BookID':bookID,"Status":'borrowed'})
             self.connection.commit()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
         # return cursor.rowcount == 1
 
 
@@ -281,7 +294,8 @@ class DatabaseUtils:
 
             return cursor.rowcount == 1
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Get user
     def getBookBorrowed(self, name, bookID):
@@ -297,7 +311,8 @@ class DatabaseUtils:
                 cursor.execute("select * from BookBorrowed Where UserName = "+ name +" AND BookID = "+ bookID)
                 return cursor.fetchall()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # The 2 methods below are new 
 
@@ -318,7 +333,8 @@ class DatabaseUtils:
                 else:
                     return True
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
 
     def checkIfBookExistsInBookBorrowed(self, isbn, name):
@@ -337,7 +353,8 @@ class DatabaseUtils:
                 else:
                     return None, False
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Delete User
     def deleteBookBorrowed(self, bookBorrowedID):
@@ -353,7 +370,8 @@ class DatabaseUtils:
                 cursor.execute("delete from BookBorrowed where BookBorrowedID != %s", (bookBorrowedID,))
             self.connection.commit()
         except:
-            print("ip address not authorised by google cloud")
+            # print("ip address not authorised by google cloud")
+            pass
 
     # Read config.json
     def readConfig(self):
