@@ -42,7 +42,7 @@ class bookWithStatus():
 class BookSchema(ma.Schema):
     # Reference: https://github.com/marshmallow-code/marshmallow/issues/377#issuecomment-261628415
     def __init__(self, strict=True, **kwargs):
-        super().__init__(strict=strict, **kwargs)
+        super().__init__(**kwargs)
     
     class Meta:
         # Fields to expose.
