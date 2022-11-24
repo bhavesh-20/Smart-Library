@@ -27,7 +27,7 @@ class user:
         # keep looping
         while True:
             # print the menu and welcome message
-            print('Welcome to smart library\n1- Register a new account \n2- Login into your account')
+            print('Welcome to smart library\n1- Register a new account \n2- Login into your account\n3.Exit')
             # try clause
             try:
                 # prompt user for input options either 1 or 2
@@ -40,6 +40,9 @@ class user:
                 elif user_input == 2:
                     # call login method
                     user.login()
+                elif user_input == 3:
+                    print("Bye")
+                    break
                 else:
                 # if user types something else --> prompts them again
                     print('Please type either 1 or 2')
