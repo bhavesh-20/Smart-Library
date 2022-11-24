@@ -329,9 +329,9 @@ class DatabaseUtils:
             with self.connection.cursor() as cursor:
                 cursor.execute("select BookID from BookBorrowed Where BookID = %(BookID)s AND Status = %(Status)s", {'BookID':bookID,"Status":'borrowed'})
                 if cursor.rowcount > 0:
-                    return False
-                else:
                     return True
+                else:
+                    return False
         except:
             # print("ip address not authorised by google cloud")
             pass
