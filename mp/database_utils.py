@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import MySQLdb
+import mysql
 # import pymysql
 import json
 import logging
@@ -23,7 +23,7 @@ class DatabaseUtils:
             PASSWORD = jsonData["password"]  
             DATABASE = jsonData["database"]  
 
-            self.connection = MySQLdb.connect(HOST, USER, PASSWORD, DATABASE)
+            self.connection = mysql.connector.connect(host=HOST, user=USER, password=PASSWORD, database=DATABASE)
             # print(self.connection)
             self.createTables()
         except  Exception as e:
