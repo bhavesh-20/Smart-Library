@@ -327,12 +327,12 @@ class DatabaseUtils:
         """
         try:
             with self.connection.cursor() as cursor:
-                cursor.execute("select BookID from BookBorrowed Where BookID = %(BookID)s AND Status != %(Status)s", {'BookID':bookID,"Status":'borrowed'})
-                unborrowed = cursor.fetchall()
-                if len(unborrowed) > 0:
-                    return True
-                else:
+                cursor.execute("select BookID from BookBorrowed Where BookID = %(BookID)s AND Status = %(Status)s", {'BookID':bookID,"Status":'borrowed'})
+                borrowed = cursor.fetchall()
+                if len(borrowed) > 0:
                     return False
+                else:
+                    return True
         except:
             # print("ip address not authorised by google cloud")
             pass
@@ -349,7 +349,8 @@ class DatabaseUtils:
         try:
             with self.connection.cursor() as cursor:
                 cursor.execute("select BookBorrowed.BookID from Book, BookBorrowed Where Book.ISBN = %(isbn)s AND Book.BookID = BookBorrowed.BookID AND BookBorrowed.Status = 'borrowed' AND BookBorrowed.UserName = %(name)s",{"isbn":isbn,"name":name})
-                if cursor.rowcount > 0:
+                booklist = cursor.fetchall()
+                if len(booklist) > 0:
                     return list(cursor.fetchall())[0][0], True
                 else:
                     return None, False
