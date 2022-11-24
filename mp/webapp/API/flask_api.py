@@ -56,8 +56,8 @@ BookSchema = BookSchema()
 def getBooks():
     books = Book.query.all()
     result = BooksSchema.dump(books)
-
-    return jsonify(result.data)
+    return result
+    # return jsonify(result.data)
 
 # Endpoint to get a book
 @api.route("/book/<id>", methods=["GET"])
