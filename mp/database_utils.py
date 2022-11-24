@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import mysql
+import mysql.connector
 # import pymysql
 import json
 import logging
