@@ -82,19 +82,22 @@ class barcodescanner:
                 print("Press Enter to try again or press q to terminate: ")
                 option = input()
                 if option == 'q':
-                    break
+                    vid.release()
+                    cv2.destroyAllWindows()
+                    return "quitbyuser"
             else:
-                print(qrtext)
-                barcodeData = "9785168723521"
+                barcodeData = qrtext
                 # check if the user typed the ISBN
                 regex= r'978[\d\-]+\d'
                 pattern = re.match(regex, barcodeData)
                 if bool(pattern)==True:
+                    vid.release()
+                    cv2.destroyAllWindows()
                     return barcodeData   
                 else:
                     print("The qr code is invalid, press q to exit or enter to continue")
                     option = input()
                     if option == 'q':
-                        break
-        vid.release()
-        cv2.destroyAllWindows()
+                        vid.release()
+                        cv2.destroyAllWindows()
+                        return "quitbyuser"
