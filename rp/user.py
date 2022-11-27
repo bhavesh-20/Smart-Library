@@ -139,12 +139,13 @@ class user:
         """
 
         # prompt user to choose bwtween console-based/acial recognition authentication for login option
-        option = int(input('Please choose one of the following options to login:\n- 1 for console-based authentication\n- 2 for facial recognition authentication\n'))
         
+        username = input('Please type your username ')
+        option = int(input(f'Hi {username}. Please choose one of the following options to login:\n- 1 for console-based authentication\n- 2 for facial recognition authentication\n'))
         # if user choses 1, it means the user want to login with console-based authentication
         if option == 1:
             # prompt user for username
-            username = input('Please type your username ')
+            
             # prompt user for password
             password = getpass.getpass('Please type your password ')
             # hash the password
@@ -186,7 +187,7 @@ class user:
             # call the recognise file which returns two values, True if face has been recognized, and the user name
             boolean, name = recognise.main()
             # if the face has been recognized, welcome the user to the smaer library
-            if boolean == True and name != 'Unknown':
+            if boolean == True and name != 'Unknown' and name == username:
                 # send login message to Master Pi
                 print(name, ' welcome to the Smart Library')
                 # create an object from rp_socket

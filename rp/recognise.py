@@ -57,7 +57,7 @@ class recognise:
                 # initialize the video stream and pointer to output video file, then
                 # allow the camera sensor to warm up
                 print("[INFO] starting video stream...")
-                vs = VideoStream(src=0).start()
+                vs = VideoStream(0).start()
                 writer = None
                 time.sleep(2.0)
 
