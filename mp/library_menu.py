@@ -9,6 +9,9 @@ from barcodescanner import barcodescanner
 
 logging.basicConfig(filename="library.log", level = logging.ERROR)
 class library_menu:
+
+    def __init__(self) -> None:
+        self.db = DatabaseUtils()
  
     def runMenu(self, user):
         """
@@ -18,7 +21,6 @@ class library_menu:
         Returns:
             logout message if the user requests
         """
-        self.db = DatabaseUtils()
         print("\nWelcome " + user + "!")
         while True:
             print()
