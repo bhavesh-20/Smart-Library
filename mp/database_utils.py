@@ -351,7 +351,7 @@ class DatabaseUtils:
                 cursor.execute("select BookBorrowed.BookID from Book, BookBorrowed Where Book.ISBN = %(isbn)s AND Book.BookID = BookBorrowed.BookID AND BookBorrowed.Status = 'borrowed' AND BookBorrowed.UserName = %(name)s",{"isbn":isbn,"name":name})
                 booklist = cursor.fetchall()
                 if len(booklist) > 0:
-                    return list(cursor.fetchall())[0][0], True
+                    return list(booklist)[0][0], True
                 else:
                     return None, False
         except:
