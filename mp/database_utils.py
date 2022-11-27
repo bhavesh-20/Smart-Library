@@ -271,7 +271,7 @@ class DatabaseUtils:
                 cursor.execute("insert into BookBorrowed (UserName, BookID, Status, BorrowedDate) values (%s, %s, %s, %s)", (name,bookID, status, borrowdDate))
                 # cursor.execute("insert into BookBorrowed (UserName, BookID, Status, BorrowedDate) values (%(UserName)s, %(BookID)s, %(Status)s, %(BorrowedDate)s)", {'UserName':name,"BookID":'bookID', 'Status':status, 'BorrowedDate':borrowdDate})
                 # cursor.execute("insert into BookBorrowed Where BookID = %(BookID)s AND Status = %(Status)s", {'BookID':bookID,"Status":'borrowed'})
-            self.connection.commit()
+                self.connection.commit()
         except:
             # print("ip address not authorised by google cloud")
             pass
