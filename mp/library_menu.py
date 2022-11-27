@@ -91,8 +91,8 @@ class library_menu:
                     break
                 else:
                     print("Invalid input - please try again.")
-                if title_result==True or isbn_result==True or author_result==True:
-                    self.borrowBook(user)
+                # if title_result==True or isbn_result==True or author_result==True:
+                #     self.borrowBook(user)
             except  Exception as e:
                 logging.error("Search menu error: {}".format(str(e)))
 
