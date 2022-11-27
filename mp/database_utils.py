@@ -47,7 +47,7 @@ class DatabaseUtils:
 
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute(open("cloud_db_schema.sql", "r").read())
             self.connection.commit()
         except:
@@ -66,7 +66,7 @@ class DatabaseUtils:
             1 if the user is added
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("insert into LmsUser (UserName) values (%s)", (name,))
             self.connection.commit()
 
@@ -85,7 +85,7 @@ class DatabaseUtils:
             returns user if borrowed a book in the past
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("select * from LmsUser Where UserName = %s", (name,))
                 if cursor.rowcount > 0:
                     return True
@@ -105,7 +105,7 @@ class DatabaseUtils:
         List of all users
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("select * from LmsUser")
                 return cursor.fetchall()
         except:
@@ -122,7 +122,7 @@ class DatabaseUtils:
 
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("delete from LmsUser where UserName = %s", (name,))
             self.connection.commit()
         except:
@@ -142,7 +142,7 @@ class DatabaseUtils:
             Confirms if the book is registered
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("insert into Book (Title, Author, ISBN) values (%s, %s, %s)", (title,author, isbn))
             self.connection.commit()
 
@@ -161,7 +161,7 @@ class DatabaseUtils:
             All books contating the keyword
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("select * from Book Where Title Like %s", ("%" + title + "%",))
                 return cursor.fetchall()
         except:
@@ -178,7 +178,7 @@ class DatabaseUtils:
             All books contating the keyword
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("select * from Book Where Author Like %s", ("%" + author + "%",))
                 return cursor.fetchall()
         except:
@@ -195,7 +195,7 @@ class DatabaseUtils:
             All books contating the keyword
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("select * from Book Where ISBN Like %s", ("%" + isbn + "%",))
                 return cursor.fetchall()
         except:
@@ -212,7 +212,7 @@ class DatabaseUtils:
             All books contating the keyword
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("select * from Book Where BookID Like %(BookID)s", {"BookID":bookID})
                 return cursor.fetchall()
         except:
@@ -230,7 +230,7 @@ class DatabaseUtils:
 
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("select * from Book")
                 return cursor.fetchall()
         except:
@@ -247,7 +247,7 @@ class DatabaseUtils:
 
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("delete from Book where BookID = %s", (bookID,))
             self.connection.commit()
         except:
@@ -267,7 +267,7 @@ class DatabaseUtils:
 
         """
         try :
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("insert into BookBorrowed (UserName, BookID, Status, BorrowedDate) values (%s, %s, %s, %s)", (name,bookID, status, borrowdDate))
                 # cursor.execute("insert into BookBorrowed (UserName, BookID, Status, BorrowedDate) values (%(UserName)s, %(BookID)s, %(Status)s, %(BorrowedDate)s)", {'UserName':name,"BookID":'bookID', 'Status':status, 'BorrowedDate':borrowdDate})
                 # cursor.execute("insert into BookBorrowed Where BookID = %(BookID)s AND Status = %(Status)s", {'BookID':bookID,"Status":'borrowed'})
@@ -288,7 +288,7 @@ class DatabaseUtils:
 
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("UPDATE BookBorrowed SET Status = %s , ReturnedDate = %s WHERE UserName = %s AND BookID = %s", (status, ReturnedDate, name,bookID))
             self.connection.commit()
 
@@ -307,7 +307,7 @@ class DatabaseUtils:
             user's borrowed book record 
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("select * from BookBorrowed Where UserName = "+ name +" AND BookID = "+ bookID)
                 return cursor.fetchall()
         except:
@@ -326,7 +326,7 @@ class DatabaseUtils:
             Either the avilable bookID or a message stating that the book is not avilable to borrow
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("select BookID from BookBorrowed Where BookID = %(BookID)s AND Status = %(Status)s", {'BookID':bookID,"Status":'borrowed'})
                 borrowed = cursor.fetchall()
                 if len(borrowed) > 0:
@@ -347,7 +347,7 @@ class DatabaseUtils:
         Returns: book ID and True if the user has borrowed the book. None and False if the user did not borrow the book
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("select BookBorrowed.BookID from Book, BookBorrowed Where Book.ISBN = %(isbn)s AND Book.BookID = BookBorrowed.BookID AND BookBorrowed.Status = 'borrowed' AND BookBorrowed.UserName = %(name)s",{"isbn":isbn,"name":name})
                 booklist = cursor.fetchall()
                 if len(booklist) > 0:
@@ -368,7 +368,7 @@ class DatabaseUtils:
 
         """
         try:
-            with self.connection.cursor() as cursor:
+            with self.connection.cursor(buffered=True) as cursor:
                 cursor.execute("delete from BookBorrowed where BookBorrowedID != %s", (bookBorrowedID,))
             self.connection.commit()
         except:
