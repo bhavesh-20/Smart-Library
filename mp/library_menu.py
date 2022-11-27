@@ -18,7 +18,7 @@ class library_menu:
         Returns:
             logout message if the user requests
         """
-
+        self.db = DatabaseUtils()
         print("\nWelcome " + user + "!")
         while True:
             print()
@@ -46,12 +46,11 @@ class library_menu:
         return "login"
 
     def insertUser(self, name):
-        with DatabaseUtils() as db:
-            if(db.insertUser(name)):
-                # print("{} inserted successfully.".format(name))
-                pass
-            else:
-                print("{} failed to be inserted.".format(name))
+        if(self.db.insertUser(name)):
+            # print("{} inserted successfully.".format(name))
+            pass
+        else:
+            print("{} failed to be inserted.".format(name))
                 
     # Search a book
     def searchBook(self, user):
@@ -150,9 +149,9 @@ class library_menu:
         # exit if user hits q
         if book_isbn == 'q': exit
         # call DatabaseUtils class and create an object of it
-        db_object = DatabaseUtils()
+        # db_object = DatabaseUtils()
         # call library menu class and create an object of it
-        lm_object = library_menu()
+        # lm_object = library_menu()
         # get today's date
         now = datetime.datetime.now()
         today_date = now.strftime("%Y-%m-%d")
@@ -163,7 +162,7 @@ class library_menu:
         pattern = re.match(regex, book_isbn)
         if bool(pattern)==True:
             # call the getBookByISBN function to check if the book exists at the library
-            book_list = db_object.getBookByISBN(book_isbn)
+            book_list = self.db.getBookByISBN(book_isbn)
             # convert to list
             book_list = list(book_list)
             # if the book doesn't exist, the apologize for the user
@@ -176,21 +175,21 @@ class library_menu:
                 # loop through all the copies of the same book and check which one is avilable to borrow
                 for i in book_list:
                     # check if the book is avilable to borrow
-                    return_value = db_object.getAvilableBook(i[0])
+                    return_value = self.db.getAvilableBook(i[0])
                     #if return_value == True and bool_borroed == False:
                     if return_value == True:
                         # get book details from the library
-                        book_details = db_object.getBookByID(i[0])
+                        book_details = self.db.getBookByID(i[0])
                         book_details = list(book_details)
                         # add leading zeros to the book id to be able to add an event
                         # since the id in google calendar must be at least 5 digits
                         # check if the user exists in LmsUser table
-                        check_user_in_LmsUser = db_object.getUser(user)
+                        check_user_in_LmsUser = self.db.getUser(user)
                         if check_user_in_LmsUser == False:
                             # add the user the LmsUser table to keep track of users who borrowed book
-                            lm_object.insertUser(user)
+                            self.insertUser(user)
                         # insert book and user details to BookBorrowed table
-                        db_object.insertBookBorrowed(user, book_details[0][0], 'borrowed', today_date)
+                        self.db.insertBookBorrowed(user, book_details[0][0], 'borrowed', today_date)
                         # print success message
                         print("You have successfully borrowed: " + book_details[0][2])
                         #bool_borroed = True
@@ -225,7 +224,7 @@ class library_menu:
                 exit
 
         # call DatabaseUtils class and create an object of it
-        db_object = DatabaseUtils()
+        # db_object = DatabaseUtils()
 
         # get today's date
         now = datetime.datetime.now()
@@ -236,10 +235,10 @@ class library_menu:
 
         if bool(pattern)==True:
             # check if the book has been borrowed at the first place
-            return_value, t_value = db_object.checkIfBookExistsInBookBorrowed(user_input, user)
+            return_value, t_value = self.db.checkIfBookExistsInBookBorrowed(user_input, user)
             if isinstance(return_value, int) and t_value == True:
                 #  update the status of the book in BookBorrowed table
-                db_object.updateBookBorrowed(user, return_value, 'returned', today_date)
+                self.db.updateBookBorrowed(user, return_value, 'returned', today_date)
                 # print a message to the user
                 print('We hope that you enjoyed your journey reading the book')
                 return True
@@ -263,16 +262,15 @@ class library_menu:
         """
         print("--- Books ---")
         table = PrettyTable(['ISBN','Title', 'Author'])
-        with DatabaseUtils() as db:
-            books =  db.getBookByTitle(title)
-            if(len(books) > 0):
-                for book in books:
-                    table.add_row([book[1], book[2], book[3]])
-                print(table)
-                return True
-            else:
-                print("Book not found! please try again.")
-                return False
+        books =  self.db.getBookByTitle(title)
+        if(len(books) > 0):
+            for book in books:
+                table.add_row([book[1], book[2], book[3]])
+            print(table)
+            return True
+        else:
+            print("Book not found! please try again.")
+            return False
 
     # list books by author 
     def listBooksByAuthor(self, author):
@@ -285,16 +283,15 @@ class library_menu:
         """
         print("--- Books ---")
         table = PrettyTable(['ISBN','Title', 'Author'])
-        with DatabaseUtils() as db:
-            books = db.getBookByAuthor(author)
-            if(len(books) > 0):
-                for book in books:
-                    table.add_row([book[1], book[2], book[3]])
-                print(table)
-                return True
-            else:
-                print("Book not found! please try again.")
-                return False
+        books = self.db.getBookByAuthor(author)
+        if(len(books) > 0):
+            for book in books:
+                table.add_row([book[1], book[2], book[3]])
+            print(table)
+            return True
+        else:
+            print("Book not found! please try again.")
+            return False
 
     # list books by ISBN
     def listBooksByISBN(self, isbn):
@@ -308,13 +305,12 @@ class library_menu:
 
         print("--- Books ---")
         table = PrettyTable(['ISBN','Title', 'Author'])
-        with DatabaseUtils() as db:
-            books = db.getBookByISBN(isbn)
-            if(len(books) > 0):
-                for book in books:
-                    table.add_row([book[1], book[2], book[3]])
-                print(table)
-                return True
-            else:
-                print("Book not found! please try again.")
-                return False
+        books = self.db.getBookByISBN(isbn)
+        if(len(books) > 0):
+            for book in books:
+                table.add_row([book[1], book[2], book[3]])
+            print(table)
+            return True
+        else:
+            print("Book not found! please try again.")
+            return False
