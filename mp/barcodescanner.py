@@ -67,7 +67,7 @@ class barcodescanner:
                 if i >= 100000:
                     break
                 
-                img = vid.read()
+                _, img = vid.read()
                 data, bbox, _ = detector.detectAndDecode(img)
                 if data:
                     qrtext = data
